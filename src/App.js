@@ -20,9 +20,31 @@ class App extends React.Component {
   unsubscribeFromAuth = null;
 
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (user) => {
+    
+    // This will listen to any changes to sign in and sign out to the user.
+    // If the is signed in, it will create a profile for the user set it into the state.
+    // However, if the user is signout, userAuth -> null.
+    
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       // this.setState({ currentUser: user });
-      createUserProfileDocument(user);
+      // createUserProfileDocument(user);
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        // It will listen to any changes that will happen to the users.
+        // get() -> Like take and forget
+        // onSnapShot -> Listen to any changes that might happen
+        userRef.onSnapshot((snapshot) => {
+          this.setState({
+            currentUser: {
+              id: snapshot.id,
+              ...snapshot.data(),
+            },
+          });
+        });
+      } else {
+        this.setState({ currentUser: userAuth });
+      }
     });
   }
 
