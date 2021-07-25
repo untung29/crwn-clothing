@@ -9,7 +9,6 @@ import Header from "./component/header/header.component.jsx";
 import SignInAndSignUpPage from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.component.jsx";
 import CheckoutPage from "./pages/checkout/checkout.component.jsx";
 
-
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import { connect } from "react-redux";
 import { setCurrentUser } from "./redux/user/user.action";
@@ -21,7 +20,7 @@ class App extends React.Component {
 
   componentDidMount() {
     // Reducer Action
-    const { setCurrentUser } = this.props;
+    const { setCurrentUser, collectionsArray } = this.props;
 
     // This will listen to any changes to sign in and sign out to the user.
     // If the is signed in, it will create a profile for the user set it into the state.

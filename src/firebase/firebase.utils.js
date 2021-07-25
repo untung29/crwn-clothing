@@ -12,6 +12,44 @@ const config = {
   measurementId: "G-24CFC88ZYY",
 };
 
+// Add collection and documents
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+  const collectionRef = firestore.collection(collectionKey);
+
+  // Allowing batching to prevent any errors halfway through. For example: Internet connection is disconnected
+  // in the middle of adding the documents.
+  // We want to add the documents either fail or success not in the between.
+
+  const batch = firestore.batch();
+  objectsToAdd.forEach(object => {
+    // Creating a new document and automatically generate a unique ID for each document.
+    const newDocRef = collectionRef.doc();
+
+    // Adding the doc into batch.
+    batch.set(newDocRef, object);
+  });
+
+  // Send the batch, return a promise.
+  return await batch.commit();
+};
+
+export const convertCollectionsSnapshotToMap = collections => {
+  const transformedCollection = collections.docs.map(doc => {
+    const { title, items } = doc.data();
+    return {
+      routeName: encodeURI(title.toLowerCase()),
+      id: doc.id,
+      title,
+      items,
+    };
+  });
+
+  return transformedCollection.reduce((accumulator, collection) => {
+    accumulator[collection.title.toLowerCase()] = collection;
+    return accumulator;
+  }, {});
+};
+
 // Store the authenticated user to the firestore
 export const createUserProfileDocument = async (userAuth, additionalData) => {
   if (!userAuth) {
