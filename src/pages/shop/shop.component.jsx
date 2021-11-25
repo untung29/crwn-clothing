@@ -4,15 +4,15 @@ import { Route } from "react-router-dom";
 import { connect } from "react-redux";
 import WithSpinner from "../../component/with-spinner/with-spinner.component";
 
-import { fetchCollectionStartAsync } from "../../redux/shop/shop.actions";
+import { fetchCollectionsStart } from "../../redux/shop/shop.actions";
 
 import CollectionsOverviewContainer from "../../component/colletions-overview/collections-overview.container.jsx";
 
 class ShopPage extends React.Component {
   unsubscribeFromSnapshot = null;
   componentDidMount() {
-    const { fetchCollectionStartAsync } = this.props;
-    fetchCollectionStartAsync();
+    const { fetchCollectionsStart } = this.props;
+    fetchCollectionsStart();
   }
 
   render() {
@@ -31,7 +31,7 @@ class ShopPage extends React.Component {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    fetchCollectionStartAsync: () => dispatch(fetchCollectionStartAsync()),
+    fetchCollectionsStart: () => dispatch(fetchCollectionsStart()),
   };
 };
 
