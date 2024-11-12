@@ -6,14 +6,17 @@ const config = {
   apiKey: "AIzaSyDUXMxtE8MLC4uZ72wZbg9qg7lJcYsgPuE",
   authDomain: "crwn-clothing-db-a2867.firebaseapp.com",
   projectId: "crwn-clothing-db-a2867",
-  storageBucket: "crwn-clothing-db-a2867.appspot.com",
+  storageBucket: "crwn-clothing-db-a2867.firebasestorage.app",
   messagingSenderId: "862121403486",
   appId: "1:862121403486:web:d235174da99f49a28600cf",
   measurementId: "G-24CFC88ZYY",
 };
 
 // Add collection and documents
-export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
   const collectionRef = firestore.collection(collectionKey);
 
   // Allowing batching to prevent any errors halfway through. For example: Internet connection is disconnected
@@ -21,7 +24,7 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => 
   // We want to add the documents either fail or success not in the between.
 
   const batch = firestore.batch();
-  objectsToAdd.forEach(object => {
+  objectsToAdd.forEach((object) => {
     // Creating a new document and automatically generate a unique ID for each document.
     const newDocRef = collectionRef.doc();
 
@@ -33,8 +36,8 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => 
   return await batch.commit();
 };
 
-export const convertCollectionsSnapshotToMap = collections => {
-  const transformedCollection = collections.docs.map(doc => {
+export const convertCollectionsSnapshotToMap = (collections) => {
+  const transformedCollection = collections.docs.map((doc) => {
     const { title, items } = doc.data();
     return {
       routeName: encodeURI(title.toLowerCase()),

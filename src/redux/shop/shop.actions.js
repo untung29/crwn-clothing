@@ -4,31 +4,41 @@ import ShopActionTypes from "./shop.types";
 //   return { type: ShopActionTypes.UPDATE_COLLECTION, payload: collectionsMap };
 // };
 
-import { firestore, convertCollectionsSnapshotToMap } from "../../firebase/firebase.utils";
+import {
+  firestore,
+  convertCollectionsSnapshotToMap,
+} from "../../firebase/firebase.utils";
 
 export const fetchCollectionsStart = () => {
+  console.log("Fetching...");
   return { type: ShopActionTypes.FETCH_COLLECTIONS_START };
 };
 
-export const fetchCollectionsSuccess = collectionsMap => {
-  return { type: ShopActionTypes.FETCH_COLLECTIONS_SUCCESS, payload: collectionsMap };
+export const fetchCollectionsSuccess = (collectionsMap) => {
+  return {
+    type: ShopActionTypes.FETCH_COLLECTIONS_SUCCESS,
+    payload: collectionsMap,
+  };
 };
 
-export const fetchCollectionsFailure = errorMessage => {
-  return { type: ShopActionTypes.FETCH_COLLECTIONS_FAILURE, payload: errorMessage };
+export const fetchCollectionsFailure = (errorMessage) => {
+  return {
+    type: ShopActionTypes.FETCH_COLLECTIONS_FAILURE,
+    payload: errorMessage,
+  };
 };
 
 export const fetchCollectionStartAsync = () => {
-  return dispatch => {
+  return (dispatch) => {
     const collectionRef = firestore.collection("collection");
     dispatch(fetchCollectionsStart());
 
     collectionRef
       .get()
-      .then(snapshot => {
+      .then((snapshot) => {
         const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
         dispatch(fetchCollectionsSuccess(collectionsMap));
       })
-      .catch(error => dispatch(fetchCollectionsFailure(error.message)));
+      .catch((error) => dispatch(fetchCollectionsFailure(error.message)));
   };
 };

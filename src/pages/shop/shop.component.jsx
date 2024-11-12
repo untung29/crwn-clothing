@@ -17,9 +17,14 @@ class ShopPage extends React.Component {
 
   render() {
     const { match, isCollectionLoaded } = this.props;
+
     return (
       <div className="shop-page">
-        <Route exact path={`${match.path}`} component={CollectionsOverviewContainer} />
+        <Route
+          exact
+          path={`${match.path}`}
+          component={CollectionsOverviewContainer}
+        />
         <Route
           path={`${match.path}/:collectionId`}
           // render={props => <CollectionPageWithSpinner isLoading={!isCollectionLoaded} {...props} />}
@@ -29,7 +34,7 @@ class ShopPage extends React.Component {
     );
   }
 }
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     fetchCollectionsStart: () => dispatch(fetchCollectionsStart()),
   };
