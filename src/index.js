@@ -9,8 +9,11 @@ import { PersistGate } from "redux-persist/integration/react";
 import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
+import { createRoot } from "react-dom/client";
 
-ReactDOM.render(
+const root = createRoot(document.getElementById("root"));
+
+root.render(
   <Provider store={store}>
     <BrowserRouter>
       <PersistGate persistor={persistor}>
@@ -19,6 +22,5 @@ ReactDOM.render(
         </React.StrictMode>
       </PersistGate>
     </BrowserRouter>
-  </Provider>,
-  document.getElementById("root")
+  </Provider>
 );

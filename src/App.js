@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Routes, Redirect, Navigate } from "react-router-dom";
 
 // Components
 import HomePage from "./pages/homepage/homepage.component.jsx";
@@ -14,6 +14,7 @@ import { connect } from "react-redux";
 import { setCurrentUser } from "./redux/user/user.action";
 import { selectCurrentUser } from "./redux/user/user.selectors";
 import { createStructuredSelector } from "reselect";
+import CollectionsOverviewComponent from "./component/colletions-overview/collections-overview.component.jsx";
 
 class App extends React.Component {
   unsubscribeFromAuth = null;
@@ -57,22 +58,28 @@ class App extends React.Component {
     return (
       <div>
         <Header />
-        <Switch>
-          <Route exact path="/" component={HomePage}></Route>
-          <Route path="/shop" component={ShopPage}></Route>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/shop" element={<ShopPage />}>
+            <Route
+              exact
+              path={`/`}
+              element={<CollectionsOverviewComponent />}
+            />
+          </Route>
           <Route
             exact
             path="/signin"
-            render={() => {
+            element={() => {
               return this.props.currentUser ? (
-                <Redirect to="/" />
+                <Navigate to="/" />
               ) : (
                 <SignInAndSignUpPage />
               );
             }}
           ></Route>
-          <Route exact path="/checkout" component={CheckoutPage}></Route>
-        </Switch>
+          <Route exact path="/checkout" element={<CheckoutPage />}></Route>
+        </Routes>
       </div>
     );
   }

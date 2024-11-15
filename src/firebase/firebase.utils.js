@@ -1,6 +1,6 @@
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/auth";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { GoogleAuthProvider, getAuth } from "firebase/auth";
 
 const config = {
   apiKey: "AIzaSyDUXMxtE8MLC4uZ72wZbg9qg7lJcYsgPuE",
@@ -92,18 +92,15 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   return userRef;
 };
 
-firebase.initializeApp(config);
+initializeApp(config);
 
 // Set the auth and firestore
-export const auth = firebase.auth();
-export const firestore = firebase.firestore();
+export const auth = getAuth();
+export const firestore = getFirestore();
 
 // Get the provider and set the custom parameters.
-const provider = new firebase.auth.GoogleAuthProvider();
+const provider = new GoogleAuthProvider();
 provider.setCustomParameters({ prompt: "select_account" });
 
 // Let's to sign in with the google.
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
-
-// Export whole incase we need it later.
-export default firebase;
